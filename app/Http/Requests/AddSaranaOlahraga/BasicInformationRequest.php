@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\AuthRequest;
+namespace App\Http\Requests\AddSaranaOlahraga;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SeekerRegister extends FormRequest
+class BasicInformationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,8 @@ class SeekerRegister extends FormRequest
     public function rules()
     {
         return [
-            'name'  => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:user_seekers,email',
-            'password' => 'required|string|min:6',
+            'name'          =>  'required|max:150',
+            'category_id'   =>  'required|numeric',
         ];
     }
 }

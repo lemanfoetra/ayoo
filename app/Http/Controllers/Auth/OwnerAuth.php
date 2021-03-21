@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthRequest\OwnerRegister;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\AuthRequest\SeekerRegister;
+use App\Owner;
 use App\Rules\RegisterOwner;
 use Illuminate\Support\Facades\Hash;
 use App\User;
@@ -16,7 +17,7 @@ class OwnerAuth extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:owner', ['except' => ['login', 'register']]);
     }
 
 
@@ -24,11 +25,11 @@ class OwnerAuth extends Controller
     {
         $credentials = request(['email', 'password']);
 
-        if (!$token = Auth::attempt($credentials)) {
+        if (!$token = auth('owner')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $user = Auth::user();
+        $user = auth('owner')->user();
         $userData = [
             'name'  => $user['name'],
             'email' => $user['email'],
@@ -40,15 +41,12 @@ class OwnerAuth extends Controller
 
     public function register(OwnerRegister $request)
     {
-        // VALIDASI user role with email
-        $request->validate(['email' => new RegisterOwner()]);
-
-        $user = new User();
-        $user->name     = $request['name'];
-        $user->role_id  = 3;
-        $user->email    = $request['email'];
-        $user->password = Hash::make($request['password']);
-        $user->save();
+        $owner = new Owner();
+        $owner->name     = $request['name'];
+        $owner->role_id  = 3;
+        $owner->email    = $request['email'];
+        $owner->password = Hash::make($request['password']);
+        $owner->save();
 
         return response()->json(['success' => $request->all()], 200);
     }
@@ -56,7 +54,7 @@ class OwnerAuth extends Controller
 
     public function me()
     {
-        return response()->json(auth()->user());
+        return response()->json(auth('owner')->user());
     }
 
 
@@ -69,7 +67,7 @@ class OwnerAuth extends Controller
 
     public function refresh()
     {
-        return $this->respondWithToken(Auth::refresh());
+        return $this->respondWithToken(auth('owner')->refresh());
     }
 
 
@@ -78,7 +76,7 @@ class OwnerAuth extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
+            'expires_in' => auth('owner')->factory()->getTTL() * 60,
             'userData'   => $userData
         ]);
     }

@@ -18,7 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
+/**
+ * Auth Seeker
+ */
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth_seeker'
@@ -30,7 +32,9 @@ Route::group([
     Route::post('me', 'Auth\SeekerAuth@me');
 });
 
-
+/**
+ * Auth Owner
+ */
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth_owner'
@@ -40,4 +44,15 @@ Route::group([
     Route::post('logout', 'Auth\OwnerAuth@logout');
     Route::post('refresh', 'Auth\OwnerAuth@refresh');
     Route::post('me', 'Auth\OwnerAuth@me');
+});
+
+/**
+ * Auth Add Sarana Olahraga
+ */
+Route::group([
+    'middleware' => ['api', 'add_sarol'],
+    'prefix' => 'add_sarana'
+], function ($router) {
+    Route::get('basic_information', 'AddSaranaOlahraga\AddBasicInformation@index');
+    Route::post('basic_information', 'AddSaranaOlahraga\AddBasicInformation@store');
 });

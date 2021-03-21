@@ -23,7 +23,7 @@ class SeekerAuth extends Controller
     {
         $credentials = request(['email', 'password']);
 
-        if (!$token = Auth::attempt($credentials)) {
+        if (!$token = auth('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -39,9 +39,6 @@ class SeekerAuth extends Controller
 
     public function register(SeekerRegister $request)
     {
-        // VALIDASI user role with email
-        $request->validate(['email' => new RegisterSeeker()]);
-
         $user = new User();
         $user->name     = $request['name'];
         $user->role_id  = 4;
@@ -55,7 +52,7 @@ class SeekerAuth extends Controller
 
     public function me()
     {
-        return response()->json(auth()->user());
+        return response()->json(auth()->guard('api')->user());
     }
 
 
@@ -68,7 +65,13 @@ class SeekerAuth extends Controller
 
     public function refresh()
     {
-        return $this->respondWithToken(Auth::refresh());
+        $user = auth('api')->user();
+        $userData = [
+            'name'  => $user['name'],
+            'email' => $user['email'],
+            'role'  => $user['role_id'],
+        ];
+        return $this->respondWithToken(auth('api')->refresh(), $userData);
     }
 
 
@@ -77,7 +80,7 @@ class SeekerAuth extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
+            'expires_in' => auth('api')->factory()->getTTL() * 60,
             'userData'   => $userData
         ]);
     }

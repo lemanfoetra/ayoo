@@ -7,12 +7,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class Owner extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
-
-    protected $table = "user_seekers";
+    protected $table = "user_owners";
+    protected $guard = 'owner';
 
     /**
      * The attributes that are mass assignable.
@@ -23,6 +23,7 @@ class User extends Authenticatable implements JWTSubject
         'name', 'email', 'role_id', 'password',
     ];
 
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -32,6 +33,7 @@ class User extends Authenticatable implements JWTSubject
         'password', 'remember_token',
     ];
 
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -40,7 +42,6 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
 
 
     public function getJWTIdentifier()
