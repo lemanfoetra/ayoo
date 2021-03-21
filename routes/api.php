@@ -55,4 +55,7 @@ Route::group([
 ], function ($router) {
     Route::get('basic_information', 'AddSaranaOlahraga\AddBasicInformation@index');
     Route::post('basic_information', 'AddSaranaOlahraga\AddBasicInformation@store');
+
+    Route::get('address/{id_sarana}', 'AddSaranaOlahraga\AddAddress@index');
+    Route::post('address/{id_sarana}', 'AddSaranaOlahraga\AddAddress@store');
 });
