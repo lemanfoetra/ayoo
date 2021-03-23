@@ -71,3 +71,16 @@ Route::group([
     Route::get('prices/{id_sarana}', 'AddSaranaOlahraga\AddPrices@index');
     Route::post('prices/{id_sarana}', 'AddSaranaOlahraga\AddPrices@store');
 });
+
+
+/**
+ * Profile Owner
+ */
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'profile_owner'
+], function ($router) {
+    Route::get('', 'ProfileOwner\ProfileOwner@index');
+    Route::post('basic_information', 'ProfileOwner\ProfileOwner@updateBasicInformationProfile');
+    Route::post('photo_profile', 'ProfileOwner\ProfileOwner@updatePhotoProfile');
+});

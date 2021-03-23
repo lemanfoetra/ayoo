@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\AddSaranaOlahraga;
+namespace App\Http\Requests\ProfileOwner;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddPhotosRequest extends FormRequest
+class UpdateBasicInformationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class AddPhotosRequest extends FormRequest
     public function rules()
     {
         return [
-            'image'  => 'mimes:jpeg,png,jpg|max:5024|required',
+            'name'   =>  'required|string|max:255'
         ];
     }
 }

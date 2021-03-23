@@ -20,7 +20,7 @@ class Owner extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'role_id', 'password',
+        'name', 'email', 'photo', 'role_id', 'password',
     ];
 
 
