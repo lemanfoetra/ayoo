@@ -5,11 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthRequest\OwnerRegister;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\AuthRequest\SeekerRegister;
 use App\Owner;
-use App\Rules\RegisterOwner;
 use Illuminate\Support\Facades\Hash;
-use App\User;
 
 
 class OwnerAuth extends Controller

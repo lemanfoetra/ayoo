@@ -4,8 +4,8 @@ namespace App\Http\Controllers\AddSaranaOlahraga;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddSaranaOlahraga\BasicInformationRequest;
-use App\Models\Api\Sarana;
-use App\Models\Api\SaranaCategories;
+use App\Models\Sarana;
+use App\Models\SaranaCategories;
 use Illuminate\Support\Facades\DB;
 
 class AddBasicInformation extends Controller

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\AddSaranaOlahraga;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddSaranaOlahraga\AddAdressRequest;
-use App\Models\Api\Sarana;
+use App\Models\Sarana;
 
 class AddAddress extends Controller
 {

@@ -4,8 +4,8 @@ namespace App\Http\Controllers\addSaranaOlahraga;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddSaranaOlahraga\AddPhotosRequest;
-use App\Models\Api\Sarana;
-use App\Models\Api\SaranaPhotos;
+use App\Models\Sarana;
+use App\Models\SaranaPhotos;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
