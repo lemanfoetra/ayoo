@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AddSaranaOlahraga\BasicInformationRequest;
 use App\Models\Api\Sarana;
 use App\Models\Api\SaranaCategories;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AddBasicInformation extends Controller
@@ -23,15 +21,19 @@ class AddBasicInformation extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($idSarana = null)
     {
-        $saranaUnpublish = $this->saranaUnPublish();
+        $dataSarana = $this->saranaUnPublish();
+        if ($idSarana != null) {
+            $dataSarana = $this->getDataSarana($idSarana);
+        }
+
         return $this->apiResponse(
             [
-                'sarana_id'             => $saranaUnpublish->id ?? null,
-                'name'                  => $saranaUnpublish->name ?? null,
-                'categoreis_id_selected'   => $saranaUnpublish->category_id ?? null,
-                'categories'            => SaranaCategories::all(['id', 'category_name']),
+                'sarana_id'                 => $dataSarana->id ?? null,
+                'name'                      => $dataSarana->name ?? null,
+                'categoreis_id_selected'    => $dataSarana->category_id ?? null,
+                'categories'                => SaranaCategories::all(['id', 'category_name']),
             ]
         );
     }
@@ -75,10 +77,24 @@ class AddBasicInformation extends Controller
     }
 
 
+    /**
+     * Get data sarana Unpublish
+     */
     private function saranaUnPublish()
     {
         return DB::table('saranas')
             ->where('publish', 'D')
+            ->first();
+    }
+
+
+    /**
+     * Get data sarana by ID
+     */
+    private function getDataSarana($idSarana)
+    {
+        return DB::table('saranas')
+            ->where('id', $idSarana)
             ->first();
     }
 

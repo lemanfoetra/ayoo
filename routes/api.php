@@ -53,17 +53,21 @@ Route::group([
     'middleware' => ['api', 'add_sarol'],
     'prefix' => 'add_sarana'
 ], function ($router) {
-    Route::get('basic_information', 'AddSaranaOlahraga\AddBasicInformation@index');
+    // Step 1
+    Route::get('basic_information/{id_sarana?}', 'AddSaranaOlahraga\AddBasicInformation@index');
     Route::post('basic_information', 'AddSaranaOlahraga\AddBasicInformation@store');
 
+    // Step 2
     Route::get('address/{id_sarana}', 'AddSaranaOlahraga\AddAddress@index');
     Route::post('address/{id_sarana}', 'AddSaranaOlahraga\AddAddress@store');
 
+    // Step 3
     Route::get('photos/{id_sarana}', 'AddSaranaOlahraga\AddPhotos@index');
     Route::post('photos/{id_sarana}', 'AddSaranaOlahraga\AddPhotos@addPhoto');
     Route::post('photos_submit/{id_sarana}', 'AddSaranaOlahraga\AddPhotos@submitPhotos');
     Route::delete('photos/{id_sarana}/{id_photo}', 'AddSaranaOlahraga\AddPhotos@delete');
 
+    // Step 4
     Route::get('prices/{id_sarana}', 'AddSaranaOlahraga\AddPrices@index');
     Route::post('prices/{id_sarana}', 'AddSaranaOlahraga\AddPrices@store');
 });
