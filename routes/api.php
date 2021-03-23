@@ -63,4 +63,7 @@ Route::group([
     Route::post('photos/{id_sarana}', 'AddSaranaOlahraga\AddPhotos@addPhoto');
     Route::post('photos_submit/{id_sarana}', 'AddSaranaOlahraga\AddPhotos@submitPhotos');
     Route::delete('photos/{id_sarana}/{id_photo}', 'AddSaranaOlahraga\AddPhotos@delete');
+
+    Route::get('prices/{id_sarana}', 'AddSaranaOlahraga\AddPrices@index');
+    Route::post('prices/{id_sarana}', 'AddSaranaOlahraga\AddPrices@store');
 });

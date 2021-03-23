@@ -67,7 +67,7 @@ class OwnerAuth extends Controller
 
     public function refresh()
     {
-        return $this->respondWithToken(auth('owner')->refresh());
+        return $this->respondWithToken(auth('owner')->refresh(), []);
     }
 
 
