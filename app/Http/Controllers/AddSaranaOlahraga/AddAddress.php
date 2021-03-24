@@ -43,15 +43,19 @@ class AddAddress extends Controller
         $sarana->address = $request->address;
         $sarana->latitude = $request->latitude;
         $sarana->longitude = $request->longitude;
-        
+
         if ($sarana->step_created < 2) {
             $sarana->step_created = 2;
         }
 
-        if ($sarana->save()) {
-            $message = 'Address saved';
-            $dataResponse = $sarana;
-            $status = 'success';
+        if (Sarana::isMine($idSarana)) {
+            if ($sarana->save()) {
+                $message = 'Address saved';
+                $dataResponse = $sarana;
+                $status = 'success';
+            }
+        } else {
+            $message = 'This sarana is not yours';
         }
         return $this->apiResponse($dataResponse, $status, $message);
     }

@@ -27,6 +27,7 @@ class AddPhotos extends Controller
         // get data sarana
         $data = DB::table('saranas')
             ->where('id', $idSarana)
+            ->where('user_id', auth('owner')->user()->id)
             ->get()->first();
 
         // get list photos
@@ -52,6 +53,7 @@ class AddPhotos extends Controller
         // get data sarana
         $data = DB::table('saranas')
             ->where('id', $idSarana)
+            ->where('user_id', auth('owner')->user()->id)
             ->get()->first();
 
         // get list photos
@@ -72,22 +74,25 @@ class AddPhotos extends Controller
         $saranaPhotos->path      = $path . '/' . $fileName;
 
         // saving data photos
-        if ($saranaPhotos->save()) {
+        if (Sarana::isMine($idSarana)) {
+            if ($saranaPhotos->save()) {
 
-            // get new list photos
-            $listPhotos = DB::table('sarana_images')
-                ->where('sarana_id', $idSarana)
-                ->get(['id', 'path'])
-                ->all();
+                // get new list photos
+                $listPhotos = DB::table('sarana_images')
+                    ->where('sarana_id', $idSarana)
+                    ->get(['id', 'path'])
+                    ->all();
 
-            return $this->apiResponse(
-                array_merge((array)$data, ['photos' => (array)$listPhotos]),
-                'success'
-            );
+                return $this->apiResponse(
+                    array_merge((array)$data, ['photos' => (array)$listPhotos]),
+                    'success'
+                );
+            }
         }
         return $this->apiResponse(
             array_merge((array)$data, ['photos' => (array)$listPhotos]),
             'error',
+            'This sarana is not yours'
         );
     }
 

@@ -25,7 +25,9 @@ class AddBasicInformation extends Controller
     {
         $dataSarana = $this->saranaUnPublish();
         if ($idSarana != null) {
-            $dataSarana = $this->getDataSarana($idSarana);
+            if (Sarana::isMine($idSarana)) {
+                $dataSarana = $this->getDataSarana($idSarana);
+            }
         }
 
         return $this->apiResponse(
@@ -46,9 +48,9 @@ class AddBasicInformation extends Controller
      */
     public function store(BasicInformationRequest $request)
     {
-        $user   = auth('owner')->user();
-        $responseMessage = '';
-        $responseData   = [];
+        $user               = auth('owner')->user();
+        $responseMessage    = '';
+        $responseData       = [];
 
         if ($request->sarana_id != null) {
             // UPDATE
@@ -56,9 +58,13 @@ class AddBasicInformation extends Controller
             $sarana->name           = $request->name;
             $sarana->category_id    = $request->category_id;
             $sarana->user_id        = $user->id;
-            if ($sarana->save()) {
-                $responseMessage = "Success data updated";
-                $responseData   = $sarana;
+            if (Sarana::isMine($request->sarana_id)) {
+                if ($sarana->save()) {
+                    $responseMessage    = "Success data updated";
+                    $responseData       = $sarana;
+                }
+            } else {
+                $responseMessage = "This Sarana is not yours";
             }
         } else {
             // INSERT
@@ -83,6 +89,7 @@ class AddBasicInformation extends Controller
     private function saranaUnPublish()
     {
         return DB::table('saranas')
+            ->where('user_id', auth('owner')->user()->id)
             ->where('publish', 'D')
             ->first();
     }

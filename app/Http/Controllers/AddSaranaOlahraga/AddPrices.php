@@ -4,6 +4,7 @@ namespace App\Http\Controllers\AddSaranaOlahraga;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddSaranaOlahraga\AddPricesRequest;
+use App\Models\Sarana;
 use App\Models\SaranaPrices;
 use Illuminate\Support\Facades\DB;
 
@@ -35,27 +36,36 @@ class AddPrices extends Controller
      */
     public function store(AddPricesRequest $request, $idSarana)
     {
-        // Hapus data yang lama
-        SaranaPrices::where('sarana_id', $idSarana)
-            ->delete();
+        if (Sarana::isMine($idSarana)) {
+            
+            // Hapus data yang lama
+            SaranaPrices::where('sarana_id', $idSarana)
+                ->delete();
 
-        $data = [];
-        if (count($request->prices) > 0) {
-            foreach ($request->prices as $key => $value) {
-                $newData = [
-                    'sarana_id'     =>  $idSarana,
-                    'prices'        =>  $value,
-                    'description'   => ($request->description[$key] ?? null)
-                ];
-                $data = array_merge($data, [$newData]);
+            $data = [];
+            if (count($request->prices) > 0) {
+                foreach ($request->prices as $key => $value) {
+                    $newData = [
+                        'sarana_id'     =>  $idSarana,
+                        'prices'        =>  $value,
+                        'description'   => ($request->description[$key] ?? null)
+                    ];
+                    $data = array_merge($data, [$newData]);
+                }
+                // Insert Data Baru
+                SaranaPrices::insert($data);
             }
-            // Insert Data Baru
-            SaranaPrices::insert($data);
+
+            return $this->apiResponse(
+                array_merge($this->getDataSarana($idSarana), ['prices' => $this->getListPrices($idSarana)]),
+                'success'
+            );
         }
 
         return $this->apiResponse(
-            array_merge($this->getDataSarana($idSarana), ['prices' => $this->getListPrices($idSarana)]),
-            'success'
+            [],
+            'error',
+            'This sarana is not yours',
         );
     }
 
@@ -67,6 +77,7 @@ class AddPrices extends Controller
     {
         return (array)DB::table('saranas')
             ->where('id', $idSarana)
+            ->where('user_id', auth('owner')->user()->id)
             ->get()->first();
     }
 
