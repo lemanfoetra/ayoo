@@ -97,3 +97,15 @@ Route::group([
     Route::post('basic_information', 'ProfileSeeker\ProfileSeeker@updateBasicInformationProfile');
     Route::post('photo_profile', 'ProfileSeeker\ProfileSeeker@updatePhotoProfile');
 });
+
+
+/**
+ * Managment Sarana by owner
+ */
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'my_sarana'
+], function ($router) {
+    Route::get('/{search?}', 'MySaranaOlahraga\MySaranaOlahraga@index');
+    Route::delete('remove/{id_sarana}', 'MySaranaOlahraga\MySaranaOlahraga@remove');
+});
