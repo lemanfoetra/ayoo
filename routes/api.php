@@ -84,3 +84,16 @@ Route::group([
     Route::post('basic_information', 'ProfileOwner\ProfileOwner@updateBasicInformationProfile');
     Route::post('photo_profile', 'ProfileOwner\ProfileOwner@updatePhotoProfile');
 });
+
+
+/**
+ * Profile Seeker
+ */
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'profile_seeker'
+], function ($router) {
+    Route::get('', 'ProfileSeeker\ProfileSeeker@index');
+    Route::post('basic_information', 'ProfileSeeker\ProfileSeeker@updateBasicInformationProfile');
+    Route::post('photo_profile', 'ProfileSeeker\ProfileSeeker@updatePhotoProfile');
+});
