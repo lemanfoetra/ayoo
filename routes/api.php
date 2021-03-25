@@ -109,3 +109,16 @@ Route::group([
     Route::get('/{search?}', 'MySaranaOlahraga\MySaranaOlahraga@index');
     Route::delete('remove/{id_sarana}', 'MySaranaOlahraga\MySaranaOlahraga@remove');
 });
+
+
+
+/**
+ * Managment Sarana by owner
+ */
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'home'
+], function ($router) {
+    Route::get('sarana/{search?}', 'Home\Home@index');
+    Route::get('categories', 'Home\Home@categories');
+});
