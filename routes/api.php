@@ -122,3 +122,16 @@ Route::group([
     Route::get('sarana/{search?}', 'Home\Home@index');
     Route::get('categories', 'Home\Home@categories');
 });
+
+
+/**
+ * Managment Sarana by owner
+ */
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'wishlist'
+], function ($router) {
+    Route::get('/', 'Wishlist\Wishlist@index');
+    Route::post('/', 'Wishlist\Wishlist@store');
+    Route::delete('/{wishlist_id}', 'Wishlist\Wishlist@delete');
+});
