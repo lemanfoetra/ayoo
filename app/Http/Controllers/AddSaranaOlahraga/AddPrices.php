@@ -103,7 +103,7 @@ class AddPrices extends Controller
                 'message' => $message,
                 'data'    => $data,
             ],
-            $status = $statusCode,
+            $status = $statusCode
         );
     }
 }
